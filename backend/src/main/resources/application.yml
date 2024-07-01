@@ -1,0 +1,50 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3307/ReadBooks?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD:1234}
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: nuyenhongdang@gmail.com
+    password: pcba kosk gxht cued
+    default-encoding: UTF-8
+    properties:
+      mail:
+        mime:
+          charset: UTF
+        smtp:
+          writetimeout: 10000
+          connectiontimeout: 10000
+          timeout: 10000
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    verify:
+      host: http://localhost:8080
+server:
+  port: ${SERVER_PORT:8080}
+api:
+  prefix: api/${VERSION_API:v1}
+cloudinary:
+  cloud_name: dwfo16yhs
+  api_key:
+  api_secret:
+aws:
+  accessKeyId:
+  secretKey:
+  s3:
+    bucket:
+      name: project-movibookers-2002
+    region: ap-southeast-1
