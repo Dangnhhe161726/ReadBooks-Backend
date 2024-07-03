@@ -5,52 +5,33 @@ import com.example.backend.models.entities.Category;
 import com.example.backend.models.entities.Feedback;
 import com.example.backend.models.entities.Notificate;
 import com.example.backend.models.entities.UserEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookDTO {
   private Long id;
-
   private String name;
-
-  private String link;
-
   private int view;
-
   private int favorites;
-
-  private String thumbnail;
-
+  @JsonProperty("create_time")
   private Date createTime;
-
+  @JsonProperty("update_time")
   private Date updateTime;
-
   private String introduce;
-
   private boolean status;
-
-
-  private Author author;
-
-
-  private UserEntity userEntity;
-
-
-  private List<Feedback> feedbacks;
-
-
-  private List<Notificate> notificates;
-
-  private List<Category> categories = new ArrayList<>();
+  @JsonProperty("author_id")
+  private long authorId;
+  private List<Long> categories;
 }

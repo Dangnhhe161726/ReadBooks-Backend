@@ -24,13 +24,13 @@ public class Book {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, length = 450)
+    @Column(nullable = true, length = 450)
     private String link;
 
     private int view;
 
     private int favorites;
-
+    @Column(nullable = true, length = 450)
     private String thumbnail;
 
     @Column(name = "create_time", nullable = false)
@@ -50,19 +50,20 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity userEntity;
+    @OneToMany(mappedBy = "book",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private List<Feedback> feedbacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "book",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    private List<Feedback> feedbacks;
+    private List<UserBook> userBooks = new ArrayList<>();
 
     @OneToMany(mappedBy = "book",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    private List<Notificate> notificates;
+    private List<Notificate> notificates = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "category_book",

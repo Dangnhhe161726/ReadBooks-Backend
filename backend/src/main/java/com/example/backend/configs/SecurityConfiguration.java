@@ -40,7 +40,7 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 String.format("%s/auth/**", apiPrefix)).permitAll()
                         .requestMatchers(
-                                String.format("%s/test/aaa", apiPrefix)).permitAll()
+                                String.format("%s/book/**", apiPrefix)).permitAll()
                         .requestMatchers(
                                 String.format("%s/images/**", apiPrefix)).permitAll()
                         .anyRequest()

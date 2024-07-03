@@ -59,12 +59,12 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    private List<Book> books = new ArrayList<>();
+    private List<Feedback> feedbacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "userEntity",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    private List<Feedback> feedbacks = new ArrayList<>();
+    private List<UserBook> userBooks = new ArrayList<>();
 
     @OneToMany(mappedBy = "userEntity",
             cascade = CascadeType.ALL,
