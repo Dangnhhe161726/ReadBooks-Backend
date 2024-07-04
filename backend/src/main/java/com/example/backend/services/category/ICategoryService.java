@@ -5,8 +5,7 @@ import com.example.backend.models.responses.CategoryResponse;
 import java.util.List;
 
 public interface ICategoryService {
-
-    void createCategoies(String name);
+  void createCategoies(String name);
 
   CategoryResponse getById(Long id);
 
