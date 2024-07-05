@@ -27,6 +27,5 @@ public class BookResponse {
     private String introduce;
     private boolean status;
     private AuthorResponse author;
-    private UserBookResponse userEntity;
-    private List<CategoryResponse> categorys;
+    private List<CategoryResponse> categories;
 }

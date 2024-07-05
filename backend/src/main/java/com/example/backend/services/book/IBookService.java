@@ -5,6 +5,7 @@ import com.example.backend.models.responses.BookResponse;
 import java.util.List;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IBookService {
 
@@ -19,7 +20,8 @@ public interface IBookService {
 
   BookResponse createBook(@NonNull BookDTO bookDTO) throws Exception;
 
-  BookResponse createLinkAndThumnail(Long id, String thumnail, String Link) throws Exception;
+    BookResponse createLinkAndThumnail(Long id, String thumnail, String Link) throws Exception;
 
-  List<BookResponse> getBooksByUserId(@NonNull Long id);
+    Page<BookResponse> getByName(String name, Pageable pageable);
+    List<BookResponse> getBooksByUserId(@NonNull Long id);
 }
