@@ -3,10 +3,10 @@ package com.example.backend.controllers.book;
 import com.example.backend.models.dtos.BookDTO;
 import com.example.backend.models.responses.BookResponse;
 import com.example.backend.models.responses.HttpResponse;
-import com.example.backend.services.amazons3.IAmazonS3Service;
 import com.example.backend.services.book.IBookService;
-import com.example.backend.services.cloudinary.ICloudinaryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,10 +20,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BookController {
     private final IBookService bookService;
-    private final ICloudinaryService cloudinaryService;
-    private final IAmazonS3Service amazonS3Service;
     private String timeStamp = LocalDateTime.now().toString();
-
+    @GetMapping("/search")
+    public ResponseEntity<Page<BookResponse>> searchByName(
+            @RequestParam String name,
+            @RequestParam int page,
+            @RequestParam int size
+    ){
+       Page<BookResponse> bookResponsePage = bookService.getByName(name, PageRequest.of(page, size));
+        return new ResponseEntity<>(bookResponsePage, HttpStatus.OK);
+    }
     @PostMapping("/create")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<HttpResponse> createBook(

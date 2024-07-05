@@ -4,6 +4,7 @@ import com.example.backend.models.dtos.BookDTO;
 import com.example.backend.models.responses.BookResponse;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IBookService {
 
@@ -19,4 +20,6 @@ public interface IBookService {
     BookResponse createBook(@NonNull BookDTO bookDTO) throws Exception;
 
     BookResponse createLinkAndThumnail(Long id, String thumnail, String Link) throws Exception;
+
+    Page<BookResponse> getByName(String name, Pageable pageable);
 }

@@ -15,4 +15,5 @@ public interface BookRepository extends JpaRepository<Book,Long> {
           + "WHERE UPPER(p.name) LIKE "
           + "CONCAT('%', UPPER(:keyword), '%' )" )
   Page<Book> findAll( String keyword,Pageable pageable);
+  Page<Book> findByNameContaining(String name, Pageable pageable);
 }

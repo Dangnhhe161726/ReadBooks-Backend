@@ -5,11 +5,9 @@ import com.example.backend.models.dtos.BookDTO;
 import com.example.backend.models.entities.Author;
 import com.example.backend.models.entities.Book;
 import com.example.backend.models.entities.Category;
-import com.example.backend.models.entities.UserEntity;
 import com.example.backend.models.responses.AuthorResponse;
 import com.example.backend.models.responses.BookResponse;
 import com.example.backend.models.responses.CategoryResponse;
-import com.example.backend.models.responses.UserBookResponse;
 import com.example.backend.repositories.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -95,7 +93,7 @@ public class BookService implements IBookService {
             categoryResponse = modelMapper.map(item, CategoryResponse.class);
             categoryResponses.add(categoryResponse);
         }
-        bookResponse.setCategorys(categoryResponses);
+        bookResponse.setCategories(categoryResponses);
         return bookResponse;
     }
 
@@ -104,7 +102,7 @@ public class BookService implements IBookService {
         Optional<Book> existingBook = Optional.ofNullable(
                 bookRepository.findById(id)
                         .orElseThrow(() -> new DataNotFoundException(
-                                        "Can not found author with id" + id
+                                        "Can not found book with id" + id
                                 )
                         )
         );
@@ -119,9 +117,17 @@ public class BookService implements IBookService {
             categoryResponse = modelMapper.map(item, CategoryResponse.class);
             categoryResponses.add(categoryResponse);
         }
-        bookResponse.setCategorys(categoryResponses);
+        bookResponse.setCategories(categoryResponses);
         return bookResponse;
     }
 
+    @Override
+    public Page<BookResponse> getByName(String name, Pageable pageable) {
+        Page<Book> books = bookRepository.findByNameContaining(name, pageable);
+        return books.map(this::convertToBookResponse);
+    }
 
+    private BookResponse convertToBookResponse(Book book) {
+        return modelMapper.map(book, BookResponse.class);
+    }
 }
