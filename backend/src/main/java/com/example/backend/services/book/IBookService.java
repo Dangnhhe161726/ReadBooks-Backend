@@ -1,5 +1,6 @@
 package com.example.backend.services.book;
 
+import com.example.backend.exceptions.DataNotFoundException;
 import com.example.backend.models.dtos.BookDTO;
 import com.example.backend.models.responses.BookResponse;
 
@@ -14,7 +15,7 @@ public interface IBookService {
     Page<BookDTO> getByPaging(
             int pageNo, int pageSize, String sortBy, String sortDirection, String keyword);
 
-    BookDTO getById(Long id);
+    BookResponse getById(Long id) throws DataNotFoundException;
 
     BookDTO save(BookDTO category);
 
