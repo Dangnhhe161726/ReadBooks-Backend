@@ -52,13 +52,13 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public Page<BookDTO> getByPaging(int pageNo, int pageSize, String sortBy, String sortDirection,
+    public Page<BookResponse> getByPaging(int pageNo, int pageSize, String sortBy, String sortDirection,
                                      String keyword) {
         Pageable pageable =
                 PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
         return bookRepository
                 .findAll(keyword, pageable)
-                .map(book -> modelMapper.map(book, BookDTO.class));
+                .map(book -> modelMapper.map(book, BookResponse.class));
     }
 
     @Override

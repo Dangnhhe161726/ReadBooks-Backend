@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface IBookService {
 
-    Page<BookDTO> getByPaging(
+    Page<BookResponse> getByPaging(
             int pageNo, int pageSize, String sortBy, String sortDirection, String keyword);
 
     BookDTO getById(Long id);
