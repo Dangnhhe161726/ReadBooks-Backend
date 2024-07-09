@@ -41,7 +41,7 @@ public class BookService implements IBookService {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Book not found with id: " + id));
 
-        return modelMapper.map(book, BookResponse.class);
+        return convertToBookResponse(book);
     }
 
     @Override
@@ -184,6 +184,11 @@ public class BookService implements IBookService {
     }
 
     private BookResponse convertToBookResponse(Book book) {
-        return modelMapper.map(book, BookResponse.class);
+        BookResponse bookResponse = modelMapper.map(book, BookResponse.class);
+        bookResponse.setAuthor(modelMapper.map(book.getAuthor(), AuthorResponse.class));
+        bookResponse.setCategories(book.getCategories().stream()
+                .map(category -> modelMapper.map(category, CategoryResponse.class))
+                .collect(Collectors.toList()));
+        return bookResponse;
     }
 }

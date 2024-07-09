@@ -74,18 +74,25 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getBookByBookId(@PathVariable Long id){
+    // @PreAuthorize("hasAnyAuthority('READER')")
+    public ResponseEntity<HttpResponse> getBookByBookId(@PathVariable Long id){
         try {
             BookResponse bookResponse = bookService.getById(id);
             return ResponseEntity.ok().body(
                     HttpResponse.builder()
                             .message("Book retrieved successfully")
+                            .timeStamp(LocalDateTime.now().toString())
+                            .status(HttpStatus.OK)
+                            .statusCode(HttpStatus.OK.value())
                             .data(Map.of("Book", bookResponse))
                             .build());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     HttpResponse.builder()
                             .message(e.getMessage())
+                            .timeStamp(LocalDateTime.now().toString())
+                            .status(HttpStatus.NOT_FOUND)
+                            .statusCode(HttpStatus.NOT_FOUND.value())
                             .build());
         }
     }
