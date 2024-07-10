@@ -74,6 +74,20 @@ public class BookController {
             .build()
     );
   }
+  @GetMapping("/{id}")
+  public ResponseEntity<HttpResponse> getBookById(
+      @PathVariable("id") @NotNull(message = "error.request.path.variable.id.invalid") Long id) {
+   BookResponse book = bookService.getById(id);
+    return ResponseEntity.ok().body(
+        HttpResponse.builder()
+            .timeStamp(timeStamp)
+            .status(HttpStatus.OK)
+            .statusCode(HttpStatus.OK.value())
+            .message("Login successfull")
+            .data(Map.of("Book", book))
+            .build()
+    );
+  }
   @GetMapping("/trending")
   protected ResponseEntity<HttpResponse> getTrendingBooks(
       @RequestParam(defaultValue = "0") int page,
