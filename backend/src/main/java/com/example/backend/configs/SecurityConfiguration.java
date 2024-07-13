@@ -43,6 +43,8 @@ public class SecurityConfiguration {
                                 String.format("%s/book/**", apiPrefix)).permitAll()
                         .requestMatchers(
                                 String.format("%s/images/**", apiPrefix)).permitAll()
+                        .requestMatchers(
+                                String.format("%s/author/**", apiPrefix)).permitAll()
                         .anyRequest()
                         .authenticated()
                 )

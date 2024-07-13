@@ -25,6 +25,7 @@ public class BookController {
     private final IBookService bookService;
     private String timeStamp = LocalDateTime.now().toString();
     @GetMapping("/search")
+    @PreAuthorize("hasAnyAuthority('READER', 'ADMIN')")
     public ResponseEntity<Page<BookResponse>> searchByName(
             @RequestParam String name,
             @RequestParam int page,
@@ -33,6 +34,7 @@ public class BookController {
        Page<BookResponse> bookResponsePage = bookService.getByName(name, PageRequest.of(page, size));
         return new ResponseEntity<>(bookResponsePage, HttpStatus.OK);
     }
+
     @PostMapping("/create")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<HttpResponse> createBook(
@@ -44,7 +46,7 @@ public class BookController {
                             .timeStamp(timeStamp)
                             .status(HttpStatus.OK)
                             .statusCode(HttpStatus.OK.value())
-                            .message("Login successfull")
+                            .message("Create book success")
                             .data(Map.of("Book", newBook))
                             .build()
             );
@@ -69,7 +71,7 @@ public class BookController {
             .timeStamp(timeStamp)
             .status(HttpStatus.OK)
             .statusCode(HttpStatus.OK.value())
-            .message("Login successfull")
+            .message("get user by id success")
             .data(Map.of("Books", books))
             .build()
     );
