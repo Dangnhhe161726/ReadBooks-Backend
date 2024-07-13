@@ -58,6 +58,11 @@ public class Book {
     @OneToMany(mappedBy = "book",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
+    private List<BookMark> bookMarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "book",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     private List<UserBook> userBooks = new ArrayList<>();
 
     @OneToMany(mappedBy = "book",
