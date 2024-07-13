@@ -74,4 +74,58 @@ public class BookController {
             .build()
     );
   }
+  @GetMapping("/{id}")
+  public ResponseEntity<HttpResponse> getBookById(
+      @PathVariable("id") @NotNull(message = "error.request.path.variable.id.invalid") Long id) {
+   BookResponse book = bookService.getById(id);
+    return ResponseEntity.ok().body(
+        HttpResponse.builder()
+            .timeStamp(timeStamp)
+            .status(HttpStatus.OK)
+            .statusCode(HttpStatus.OK.value())
+            .message("Login successfull")
+            .data(Map.of("Book", book))
+            .build()
+    );
+  }
+  @GetMapping("/trending")
+  protected ResponseEntity<HttpResponse> getTrendingBooks(
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "16") int size,
+      @RequestParam(required = false, defaultValue = "favorites") String sortBy,
+      @RequestParam(required = false, defaultValue = "DESC") String sortDirection,
+      @RequestParam(required = false, defaultValue = "") String keyword
+  ) {
+    Page<BookResponse> productPage =
+        bookService.getByPaging(page, size, sortBy, sortDirection, keyword);
+    return ResponseEntity.ok().body(
+        HttpResponse.builder()
+            .timeStamp(timeStamp)
+            .status(HttpStatus.OK)
+            .statusCode(HttpStatus.OK.value())
+            .message("Login successfull")
+            .data(Map.of("productPage", productPage))
+            .build()
+    );
+  }
+  @GetMapping("/new")
+  protected ResponseEntity<HttpResponse> getNewBooks(
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "16") int size,
+      @RequestParam(required = false, defaultValue = "createTime") String sortBy,
+      @RequestParam(required = false, defaultValue = "DESC") String sortDirection,
+      @RequestParam(required = false, defaultValue = "") String keyword
+  ) {
+    Page<BookResponse> productPage =
+        bookService.getByPaging(page, size, sortBy, sortDirection, keyword);
+    return ResponseEntity.ok().body(
+        HttpResponse.builder()
+            .timeStamp(timeStamp)
+            .status(HttpStatus.OK)
+            .statusCode(HttpStatus.OK.value())
+            .message("Login successfull")
+            .data(Map.of("productPage", productPage))
+            .build()
+    );
+  }
 }

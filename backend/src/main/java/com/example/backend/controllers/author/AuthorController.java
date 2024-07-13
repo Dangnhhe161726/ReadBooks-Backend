@@ -45,7 +45,7 @@ public class AuthorController {
 
   @GetMapping()
   public ResponseEntity<HttpResponse> getAll() {
-    List<AuthorResponse> categorys = authorService.getAll();
+    List<AuthorResponse> authors = authorService.getAll();
 
     return ResponseEntity.ok().body(
         HttpResponse.builder()
@@ -53,7 +53,7 @@ public class AuthorController {
             .status(HttpStatus.OK)
             .statusCode(HttpStatus.OK.value())
             .message("Login successfull")
-            .data(Map.of("Authors", categorys))
+            .data(Map.of("Authors", authors))
             .build()
     );
   }
