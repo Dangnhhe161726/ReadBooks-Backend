@@ -1,6 +1,5 @@
 package com.example.backend.configs;
 
-
 import com.example.backend.configs.jwt.JwtAuthEntryPoint;
 import com.example.backend.configs.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;

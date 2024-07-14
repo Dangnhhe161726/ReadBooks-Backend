@@ -1,11 +1,13 @@
 package com.example.backend.services.user;
 
-
 import com.example.backend.configs.jwt.JwtGenerator;
+import com.example.backend.models.dtos.ChangePasswordDTO;
 import com.example.backend.models.dtos.LoginDTO;
 import com.example.backend.models.dtos.RegisterDTO;
+import com.example.backend.models.dtos.UpdateProfileDTO;
 import com.example.backend.models.entities.Confirmation;
 import com.example.backend.models.entities.Role;
+import com.example.backend.models.entities.Token;
 import com.example.backend.models.entities.UserEntity;
 import com.example.backend.models.responses.BookResponse;
 import com.example.backend.models.responses.UserTokenResponse;
@@ -13,6 +15,7 @@ import com.example.backend.repositories.ConfirmationRepository;
 import com.example.backend.repositories.RoleRepository;
 import com.example.backend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +25,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -55,6 +62,12 @@ public class AuthService implements IAuthService {
 
         var token = jwtGenerator.generateToken(user.getEmail());
 
+        // Token storedToken = new Token();
+        // storedToken.setToken(token);
+        // storedToken.setUserEntity(user); // Set the user for the token
+        // storedToken.setRevoked(false);
+        // tokenRepository.save(storedToken);
+
         return token;
     }
 
@@ -85,7 +98,7 @@ public class AuthService implements IAuthService {
         Confirmation confirmation = new Confirmation(userEntity, token);
         confirmationRepository.save(confirmation);
 
-        //Send email with token
+        // Send email with token
         emailService.sendHtmlEmailWithEmbeddedFiles(userEntity.getFullName(),
                 userEntity.getEmail(), token);
         return userEntity;
@@ -98,8 +111,7 @@ public class AuthService implements IAuthService {
                 .orElseThrow(() -> new NoSuchElementException("Confiamtion not found token"));
         Optional<UserEntity> userEntity = userRepository.findByEmail(
                 confirmation.getUserEntity()
-                        .getEmail()
-        );
+                        .getEmail());
         if (!userEntity.isPresent()) {
             throw new RuntimeException("Email verify not exist");
         }
@@ -116,6 +128,49 @@ public class AuthService implements IAuthService {
             return modelMapper.map(userEntity, UserTokenResponse.class);
         }
         throw new Exception("User not found with email: " + username);
+    }
+
+    public UserEntity getUserProfile(String userEmail) {
+        return userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new NoSuchElementException("User not found with email: " + userEmail));
+    }
+
+    @Override
+    public void changePassword(String userEmail, @Valid ChangePasswordDTO changePasswordDto) {
+        UserEntity user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), user.getPassword())) {
+            throw new RuntimeException("Current password is incorrect");
+        }
+
+        if (!changePasswordDto.getNewPassword().equals(changePasswordDto.getConfirmNewPassword())) {
+            throw new RuntimeException("New password and confirm password do not match");
+        }
+
+        user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void updateProfile(String userEmail, @Valid UpdateProfileDTO updateProfileDTO) {
+        UserEntity user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new NoSuchElementException("User not found with email: " + userEmail));
+
+        user.setFullName(updateProfileDTO.getFullName());
+        user.setEmail(updateProfileDTO.getEmail());
+        user.setPhoneNumber(updateProfileDTO.getPhoneNumber());
+
+        // Chuyển đổi LocalDate từ UpdateProfileDTO sang java.sql.Date
+        LocalDate localDate = LocalDate.parse(updateProfileDTO.getFormattedDob(),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        user.setDob(Date.valueOf(localDate));
+
+        user.setAddress(updateProfileDTO.getAddress());
+        user.setGender(updateProfileDTO.isGender());
+
+        userRepository.save(user);
     }
 
 }

@@ -156,5 +156,3 @@ public class BookService implements IBookService {
     return modelMapper.map(book, BookResponse.class);
   }
 }
-
-

@@ -25,14 +25,14 @@ import java.util.Map;
 public class BookController {
     private final IBookService bookService;
     private String timeStamp = LocalDateTime.now().toString();
+
     @GetMapping("/search")
     @PreAuthorize("hasAnyAuthority('READER', 'ADMIN')")
     public ResponseEntity<Page<BookResponse>> searchByName(
             @RequestParam String name,
             @RequestParam int page,
-            @RequestParam int size
-    ){
-       Page<BookResponse> bookResponsePage = bookService.getByName(name, PageRequest.of(page, size));
+            @RequestParam int size) {
+        Page<BookResponse> bookResponsePage = bookService.getByName(name, PageRequest.of(page, size));
         return new ResponseEntity<>(bookResponsePage, HttpStatus.OK);
     }
 
@@ -49,23 +49,21 @@ public class BookController {
                             .statusCode(HttpStatus.OK.value())
                             .message("Create book success")
                             .data(Map.of("Book", newBook))
-                            .build()
-            );
+                            .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     HttpResponse.builder()
                             .statusCode(HttpStatus.BAD_REQUEST.value())
                             .timeStamp(timeStamp)
                             .message(e.getMessage())
-                            .build()
-            );
+                            .build());
         }
     }
 
-  @GetMapping("/user/{id}")
-  public ResponseEntity<HttpResponse> getBooksByUserId(
-      @PathVariable("id") @NotNull(message = "error.request.path.variable.id.invalid") Long id) {
-    List<BookResponse> books = bookService.getBooksByUserId(id);
+    @GetMapping("/user/{id}")
+    public ResponseEntity<HttpResponse> getBooksByUserId(
+            @PathVariable("id") @NotNull(message = "error.request.path.variable.id.invalid") Long id) {
+        List<BookResponse> books = bookService.getBooksByUserId(id);
 
     return ResponseEntity.ok().body(
         HttpResponse.builder()

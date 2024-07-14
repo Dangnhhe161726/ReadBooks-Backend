@@ -1,5 +1,6 @@
 package com.example.backend.services.book;
 
+import com.example.backend.exceptions.DataNotFoundException;
 import com.example.backend.models.dtos.BookDTO;
 import com.example.backend.models.responses.BookDetailResponse;
 import com.example.backend.models.responses.BookResponse;
