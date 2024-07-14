@@ -41,6 +41,7 @@ public class Book {
     @Temporal(TemporalType.DATE)
     private Date updateTime;
 
+   @Column(nullable = true, length = 10000)
     private String introduce;
 
     @Column(nullable = false)
