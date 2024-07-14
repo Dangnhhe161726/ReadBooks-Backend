@@ -1,6 +1,7 @@
 package com.example.backend.services.book;
 
 import com.example.backend.models.dtos.BookDTO;
+import com.example.backend.models.responses.BookDetailResponse;
 import com.example.backend.models.responses.BookResponse;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface IBookService {
     Page<BookResponse> getByPaging(
             int pageNo, int pageSize, String sortBy, String sortDirection, String keyword);
 
-    BookResponse getById(Long id);
+    BookDetailResponse getById(Long id);
 
     BookDTO save(BookDTO category);
 

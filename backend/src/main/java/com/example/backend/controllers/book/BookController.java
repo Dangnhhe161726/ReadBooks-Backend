@@ -2,6 +2,7 @@ package com.example.backend.controllers.book;
 
 import com.example.backend.models.dtos.BookDTO;
 import com.example.backend.models.responses.AuthorResponse;
+import com.example.backend.models.responses.BookDetailResponse;
 import com.example.backend.models.responses.BookResponse;
 import com.example.backend.models.responses.HttpResponse;
 import com.example.backend.services.book.IBookService;
@@ -79,7 +80,7 @@ public class BookController {
   @GetMapping("/{id}")
   public ResponseEntity<HttpResponse> getBookById(
       @PathVariable("id") @NotNull(message = "error.request.path.variable.id.invalid") Long id) {
-   BookResponse book = bookService.getById(id);
+   BookDetailResponse book = bookService.getById(id);
     return ResponseEntity.ok().body(
         HttpResponse.builder()
             .timeStamp(timeStamp)

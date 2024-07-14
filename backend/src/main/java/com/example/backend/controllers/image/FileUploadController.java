@@ -86,8 +86,18 @@ public class FileUploadController {
     }
 
     @GetMapping("/download-from-amazon")
-    public ResponseEntity<String> getFileUrl(@RequestParam("fileName") String fileName) {
+    public ResponseEntity<HttpResponse> getFileUrl(
+            @RequestParam("fileName") String fileName
+    ) {
         String url = amazonS3Service.getFileUrl(fileName);
-        return new ResponseEntity<>(url, HttpStatus.OK);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(timeStamp)
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Get url file book success")
+                        .data(Map.of("url", url))
+                        .build()
+        );
     }
 }

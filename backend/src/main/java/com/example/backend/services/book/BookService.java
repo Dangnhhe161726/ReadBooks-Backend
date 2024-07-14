@@ -6,6 +6,7 @@ import com.example.backend.models.entities.Author;
 import com.example.backend.models.entities.Book;
 import com.example.backend.models.entities.Category;
 import com.example.backend.models.responses.AuthorResponse;
+import com.example.backend.models.responses.BookDetailResponse;
 import com.example.backend.models.responses.BookResponse;
 import com.example.backend.models.responses.CategoryResponse;
 import com.example.backend.repositories.AuthorRepository;
@@ -42,12 +43,11 @@ public class BookService implements IBookService {
   private final CategoryRepository categoryRepository;
 
   @Override
-  public BookResponse getById(Long id) {
+  public BookDetailResponse getById(Long id) {
     return Optional.ofNullable(id)
         .flatMap(
-            e -> bookRepository.findById(e).map(book -> modelMapper.map(book, BookResponse.class)))
+            e -> bookRepository.findById(e).map(book -> modelMapper.map(book, BookDetailResponse.class)))
         .orElse(null);
-
   }
 
   @Override
@@ -110,50 +110,6 @@ public class BookService implements IBookService {
     return bookResponse;
   }
 
-//    @Override
-//    public BookResponse createLinkAndThumnail(Long id, String thumnail, String link) throws Exception {
-//        Optional<Book> existingBook = Optional.ofNullable(
-//                bookRepository.findById(id)
-//                        .orElseThrow(() -> new DataNotFoundException(
-//                                        "Can not found book with id" + id
-//                                )
-//                        )
-//        );
-//        existingBook.get().setThumbnail(thumnail);
-//        existingBook.get().setLink(link);
-//        bookRepository.save(existingBook.get());
-//        BookResponse bookResponse = modelMapper.map(existingBook.get(), BookResponse.class);
-//        bookResponse.setAuthor(modelMapper.map(existingBook.get().getAuthor(), AuthorResponse.class));
-//        List<CategoryResponse> categoryResponses = new ArrayList<>();
-//        CategoryResponse categoryResponse = null;
-//        for (Category item : existingBook.get().getCategories()) {
-//            categoryResponse = modelMapper.map(item, CategoryResponse.class);
-//            categoryResponses.add(categoryResponse);
-//        }
-//        bookResponse.setCategories(categoryResponses);
-//        return bookResponse;
-//    }
-
-//    //
-//    Book book = modelMapper.map(bookDTO, Book.class);
-//    book.setAuthor(existingAuthor.get());
-//    book.setCategories(existingListCategory);
-//    Book newBook = bookRepository.save(book);
-//    //
-//    BookResponse bookResponse = modelMapper.map(newBook, BookResponse.class);
-//    bookResponse.setAuthor(modelMapper.map(newBook.getAuthor(),AuthorResponse .class));
-//    List<CategoryResponse> categoryResponses = new ArrayList<>();
-//    CategoryResponse categoryResponse = null;
-//    for(
-//    Category item :newBook.getCategories())
-//
-//    {
-//        categoryResponse = modelMapper.map(item, CategoryResponse.class);
-//        categoryResponses.add(categoryResponse);
-//    }
-//    bookResponse.setCategorys(categoryResponses);
-//    return bookResponse;
-//}
 
   @Override
   public BookResponse createLinkAndThumnail(Long id, String thumnail, String link)

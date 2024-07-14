@@ -42,6 +42,8 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 String.format("%s/book/**", apiPrefix)).permitAll()
                         .requestMatchers(
+                                String.format("%s/bookmark/**", apiPrefix)).permitAll()
+                        .requestMatchers(
                                 String.format("%s/images/**", apiPrefix)).permitAll()
                         .requestMatchers(
                                 String.format("%s/author/**", apiPrefix)).permitAll()
