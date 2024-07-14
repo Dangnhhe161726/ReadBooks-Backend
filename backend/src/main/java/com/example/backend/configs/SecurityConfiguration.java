@@ -1,6 +1,5 @@
 package com.example.backend.configs;
 
-
 import com.example.backend.configs.jwt.JwtAuthEntryPoint;
 import com.example.backend.configs.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +41,7 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 String.format("%s/book/**", apiPrefix)).permitAll()
                         .requestMatchers(
-                                String.format("%s/images/**", apiPrefix)).permitAll()
+                                String.format("%s/images/**", apiPrefix)).permitAll()     
                         .anyRequest()
                         .authenticated()
                 )
