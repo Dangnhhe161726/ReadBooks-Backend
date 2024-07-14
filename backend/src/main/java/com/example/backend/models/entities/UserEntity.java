@@ -75,4 +75,9 @@ public class UserEntity {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private List<Token> tokens = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userEntity",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private List<BookMark> bookMarks = new ArrayList<>();
 }

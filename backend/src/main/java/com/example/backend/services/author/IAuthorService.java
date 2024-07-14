@@ -2,6 +2,7 @@ package com.example.backend.services.author;
 
 import com.example.backend.models.responses.AuthorResponse;
 import com.example.backend.models.responses.CategoryResponse;
+import com.example.backend.models.responses.UserTokenResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -20,4 +21,6 @@ public interface IAuthorService {
     void delete(Long id);
 
    Page<AuthorResponse>  getByName(String name, Pageable pageable);
+
+
 }

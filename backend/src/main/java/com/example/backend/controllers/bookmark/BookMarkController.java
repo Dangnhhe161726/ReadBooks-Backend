@@ -24,13 +24,14 @@ public class BookMarkController {
 
     private final IBookMarkService bookMarkService;
 
-    @GetMapping("/book/{bookId}")
+    @GetMapping("/book/{bookId}/{userId}")
     @PreAuthorize("hasAnyAuthority('READER', 'ADMIN')")
     public ResponseEntity<HttpResponse> getByBookId(
-            @PathVariable("bookId") @NotNull(message = "error.request.path.variable.id.invalid") Long bookId
+            @PathVariable("bookId") @NotNull(message = "error.request.path.variable.id.invalid") Long bookId,
+            @PathVariable("userId") @NotNull(message = "error.request.path.variable.id.invalid") Long userId
     ) {
         try {
-            List<BookMarkResponse> bookMarkResponses = bookMarkService.findByBookId(bookId);
+            List<BookMarkResponse> bookMarkResponses = bookMarkService.findByBookIdAAndUserId(bookId,userId);
             return ResponseEntity.ok().body(
                     HttpResponse.builder()
                             .timeStamp(timeStamp)

@@ -5,10 +5,12 @@ import com.example.backend.models.dtos.BookMarkDTO;
 import com.example.backend.models.entities.Author;
 import com.example.backend.models.entities.Book;
 import com.example.backend.models.entities.BookMark;
+import com.example.backend.models.entities.UserEntity;
 import com.example.backend.models.responses.BookMarkResponse;
 import com.example.backend.models.responses.BookResponse;
 import com.example.backend.repositories.BookMarkRepository;
 import com.example.backend.repositories.BookRepository;
+import com.example.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,16 +26,18 @@ public class BookMarkService implements IBookMarkService {
     private final ModelMapper modelMapper;
     private final BookMarkRepository bookMarkRepository;
     private final BookRepository bookRepository;
-
+    private final UserRepository userRepository;
     @Override
-    public List<BookMarkResponse> findByBookId(Long bookId) {
-        return Optional.ofNullable(bookId)
-                .map(bookMarkRepository::findByBookId)
-                .orElse(List.of())
+    public List<BookMarkResponse> findByBookIdAAndUserId(Long bookId, Long userId) {
+        if (bookId == null || userId == null) {
+            return List.of();
+        }
+        return bookMarkRepository.findByBookIdAAndUserId(bookId, userId)
                 .stream()
                 .map(bookMark -> modelMapper.map(bookMark, BookMarkResponse.class))
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public BookMarkResponse save(BookMarkDTO bookMarkDTO) throws DataNotFoundException {
@@ -44,8 +48,16 @@ public class BookMarkService implements IBookMarkService {
                                 )
                         )
         );
+        Optional<UserEntity> existingUser = Optional.ofNullable(
+                userRepository.findById(bookMarkDTO.getUserId())
+                        .orElseThrow(() -> new DataNotFoundException(
+                                        "Can not found user with id" + bookMarkDTO.getUserId()
+                                )
+                        )
+        );
         BookMark bookMark = modelMapper.map(bookMarkDTO, BookMark.class);
         bookMark.setBook(existingBook.get());
+        bookMark.setUserEntity(existingUser.get());
         BookMark newBookMark = bookMarkRepository.save(bookMark);
         BookMarkResponse bookMarkResponse = modelMapper.map(newBookMark, BookMarkResponse.class);
         return bookMarkResponse;

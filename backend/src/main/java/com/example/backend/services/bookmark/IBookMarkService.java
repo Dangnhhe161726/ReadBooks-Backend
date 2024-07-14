@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IBookMarkService {
 
-    List<BookMarkResponse> findByBookId(Long bookId);
+    List<BookMarkResponse> findByBookIdAAndUserId(Long bookId, Long userId);
     BookMarkResponse save(BookMarkDTO bookMarkDTO) throws DataNotFoundException;
 
     boolean delete(Long id) throws DataNotFoundException;

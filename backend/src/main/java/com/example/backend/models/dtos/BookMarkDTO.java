@@ -13,4 +13,5 @@ public class BookMarkDTO {
     private String name;
     private int pageNumber;
     private Long bookId;
+    private Long userId;
 }

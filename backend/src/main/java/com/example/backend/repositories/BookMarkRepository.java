@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
 
-    @Query("SELECT DISTINCT bm FROM  BookMark bm WHERE  bm.book.id = :bookId")
-    List<BookMark> findByBookId(Long bookId);
+    @Query("SELECT DISTINCT bm FROM  BookMark bm WHERE  bm.book.id = :bookId AND bm.userEntity.id = :userId")
+    List<BookMark> findByBookIdAAndUserId(Long bookId, Long userId);
+
+
 }

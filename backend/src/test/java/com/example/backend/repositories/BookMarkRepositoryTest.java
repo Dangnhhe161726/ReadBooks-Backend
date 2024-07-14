@@ -22,9 +22,9 @@ public class BookMarkRepositoryTest {
     public void testFindBookMarksByBookId() {
         // Replace with actual book ID you want to test with
         Long bookId = 2L;
-
+        Long userId = 1L;
         // Call the service or repository method
-        List<BookMark> foundBookMarks = bookMarkRepository.findByBookId(bookId);
+        List<BookMark> foundBookMarks = bookMarkRepository.findByBookIdAAndUserId(bookId, userId);
 
         // Assert the results
         assertThat(foundBookMarks).hasSize(1);
