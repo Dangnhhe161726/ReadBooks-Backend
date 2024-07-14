@@ -7,6 +7,8 @@ import com.example.backend.models.dtos.RegisterDTO;
 import com.example.backend.models.entities.Confirmation;
 import com.example.backend.models.entities.Role;
 import com.example.backend.models.entities.UserEntity;
+import com.example.backend.models.responses.BookResponse;
+import com.example.backend.models.responses.UserTokenResponse;
 import com.example.backend.repositories.ConfirmationRepository;
 import com.example.backend.repositories.RoleRepository;
 import com.example.backend.repositories.UserRepository;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -104,4 +107,15 @@ public class AuthService implements IAuthService {
         confirmationRepository.delete(confirmation);
         return Boolean.TRUE;
     }
+
+    @Override
+    public UserTokenResponse loadUserByUsername(String username) throws Exception {
+        Optional<UserEntity> userEntityOptional = userRepository.findByEmail(username);
+        if (userEntityOptional.isPresent()) {
+            UserEntity userEntity = userEntityOptional.get();
+            return modelMapper.map(userEntity, UserTokenResponse.class);
+        }
+        throw new Exception("User not found with email: " + username);
+    }
+
 }

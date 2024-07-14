@@ -1,10 +1,12 @@
 package com.example.backend.controllers;
 
+import com.example.backend.configs.jwt.JwtGenerator;
 import com.example.backend.models.dtos.LoginDTO;
 import com.example.backend.models.dtos.RegisterDTO;
 import com.example.backend.models.entities.UserEntity;
 import com.example.backend.models.responses.HttpResponse;
 import com.example.backend.models.responses.UserResponse;
+import com.example.backend.models.responses.UserTokenResponse;
 import com.example.backend.services.user.IAuthService;
 import com.example.backend.validations.ValidationDataRequest;
 import jakarta.validation.Valid;
@@ -12,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +32,7 @@ import java.util.Map;
 public class AuthController {
     private final IAuthService authService;
     private final ModelMapper modelMapper;
+    private final JwtGenerator jwtGenerator;
     private String timeStamp = LocalDateTime.now().toString();
 
     @PostMapping("/login")
@@ -118,5 +123,31 @@ public class AuthController {
             );
         }
     }
+
+    @GetMapping("/userinfo")
+    public ResponseEntity<HttpResponse> getUserInfo(Authentication authentication) {
+        try {
+
+            String username = authentication.getName();
+            UserTokenResponse user = authService.loadUserByUsername(username);
+            return ResponseEntity.ok().body(
+                    HttpResponse.builder()
+                            .timeStamp(timeStamp)
+                            .status(HttpStatus.OK)
+                            .message("Get user success")
+                            .data(Map.of("userByToken", user))
+                            .build()
+            );
+        } catch (Exception e) {
+            // Handle exceptions
+            return ResponseEntity.badRequest().body(
+                    HttpResponse.builder()
+                            .timeStamp(timeStamp)
+                            .message(e.getMessage())
+                            .build()
+            );
+        }
+    }
+
 
 }

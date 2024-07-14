@@ -6,6 +6,7 @@ import com.example.backend.models.entities.Category;
 import com.example.backend.models.responses.AuthorResponse;
 import com.example.backend.models.responses.BookResponse;
 import com.example.backend.models.responses.CategoryResponse;
+import com.example.backend.models.responses.UserTokenResponse;
 import com.example.backend.repositories.AuthorRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
@@ -66,6 +67,8 @@ public class AuthorService implements IAuthorService {
         Page<Author> authors = authorRepository.findByNameContaining(name, pageable);
         return authors.map(this::convertToAuthorResponse);
     }
+
+
 
     private AuthorResponse convertToAuthorResponse(Author author) {
         return modelMapper.map(author, AuthorResponse.class);
