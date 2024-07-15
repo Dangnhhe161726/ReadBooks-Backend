@@ -1,10 +1,12 @@
 package com.example.backend.controllers.image;
 
+import com.example.backend.models.dtos.NotificattionDTO;
 import com.example.backend.models.responses.BookResponse;
 import com.example.backend.models.responses.HttpResponse;
 import com.example.backend.services.amazons3.IAmazonS3Service;
 import com.example.backend.services.book.IBookService;
 import com.example.backend.services.cloudinary.ICloudinaryService;
+import com.example.backend.services.firebase.IFirebaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("${api.prefix}/images")
@@ -27,6 +30,7 @@ public class FileUploadController {
     private final ICloudinaryService cloudinaryService;
     private final IAmazonS3Service amazonS3Service;
     private final IBookService bookService;
+    private final IFirebaseService firebaseService;
     private String timeStamp = LocalDateTime.now().toString();
 
     @PostMapping("/upload-to-cloud-dinary/{bookId}")
@@ -65,12 +69,21 @@ public class FileUploadController {
             String url = cloudinaryService.uploadFile(fileThumnail);
             String fileName = amazonS3Service.uploadFile(fileBook);
             BookResponse bookResponse = bookService.createLinkAndThumnail(id, url, fileName);
+            NotificattionDTO notificattion = new NotificattionDTO();
+            notificattion.setBookId(bookResponse.getId());
+            notificattion.setCreateTime(timeStamp);
+            notificattion.setLinkBook(bookResponse.getThumbnail());
+            notificattion.setTitle(bookResponse.getName());
+            notificattion.setDescription(bookResponse.getIntroduce());
+            CompletableFuture<Boolean> future = firebaseService.createNotification(notificattion);
+            String mess = future.get() ? "Notification created successfully." : "Notification created unsuccessfully.";
+
             return ResponseEntity.ok().body(
                     HttpResponse.builder()
                             .timeStamp(timeStamp)
                             .status(HttpStatus.OK)
                             .statusCode(HttpStatus.OK.value())
-                            .message("Insert file to book success")
+                            .message("Insert file to book success. " + mess)
                             .data(Map.of("Book", bookResponse))
                             .build()
             );

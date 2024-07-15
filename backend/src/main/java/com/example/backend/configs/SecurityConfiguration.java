@@ -46,6 +46,8 @@ public class SecurityConfiguration {
                                 String.format("%s/images/**", apiPrefix)).permitAll()
                         .requestMatchers(
                                 String.format("%s/author/**", apiPrefix)).permitAll()
+                        .requestMatchers(
+                                String.format("%s/test/**", apiPrefix)).permitAll()
                         .anyRequest()
                         .authenticated()
                 )
