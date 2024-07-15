@@ -48,6 +48,11 @@ dependencies {
 	implementation 'commons-fileupload:commons-fileupload:1.5'
 	// AWS Java SDK dependency
 	implementation 'com.amazonaws:aws-java-sdk:1.12.744'
+	// Connect firebase
+	implementation'com.google.firebase:firebase-admin:8.1.0'
+	implementation'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+	implementation'com.fasterxml.jackson.core:jackson-core:2.15.0'
+	implementation'com.fasterxml.jackson.core:jackson-annotations:2.15.0'
 }
 
 tasks.named('test') {
