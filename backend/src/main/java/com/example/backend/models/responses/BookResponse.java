@@ -1,5 +1,6 @@
 package com.example.backend.models.responses;
 
+import com.example.backend.models.entities.Feedback;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,5 +28,6 @@ public class BookResponse {
     private String introduce;
     private boolean status;
     private AuthorResponse author;
+    private List<FeedBackResponse> feedbacks;
     private List<CategoryResponse> categories;
 }
