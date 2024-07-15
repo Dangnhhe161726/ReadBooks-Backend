@@ -32,4 +32,6 @@ public interface IBookService {
 
     List<BookResponse> getBooksByCategoryId(@NonNull Long id);
     List<BookResponse> getBooksByAuthorId(@NonNull Long id);
+
+    BookResponse addBookToUser(@NonNull Long userId, @NonNull Long bookId) throws DataNotFoundException;
 }
