@@ -75,6 +75,35 @@ public class BookController {
             .build()
     );
   }
+  @GetMapping("/category/{id}")
+    public ResponseEntity<HttpResponse> getBooksByCategoryId(
+            @PathVariable("id") @NotNull(message = "error.request.path.variable.id.invalid") Long id) {
+        List<BookResponse> books = bookService.getBooksByCategoryId(id);
+
+    return ResponseEntity.ok().body(
+        HttpResponse.builder()
+            .timeStamp(timeStamp)
+            .status(HttpStatus.OK)
+            .statusCode(HttpStatus.OK.value())
+            .message("get user by id success")
+            .data(Map.of("Books", books))
+            .build()
+    );
+  }  @GetMapping("/author/{id}")
+    public ResponseEntity<HttpResponse> getBooksByAuthorId(
+            @PathVariable("id") @NotNull(message = "error.request.path.variable.id.invalid") Long id) {
+        List<BookResponse> books = bookService.getBooksByAuthorId(id);
+
+    return ResponseEntity.ok().body(
+        HttpResponse.builder()
+            .timeStamp(timeStamp)
+            .status(HttpStatus.OK)
+            .statusCode(HttpStatus.OK.value())
+            .message("get user by id success")
+            .data(Map.of("Books", books))
+            .build()
+    );
+  }
   @GetMapping("/{id}")
   public ResponseEntity<HttpResponse> getBookById(
       @PathVariable("id") @NotNull(message = "error.request.path.variable.id.invalid") Long id) {

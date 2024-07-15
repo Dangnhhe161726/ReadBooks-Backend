@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class BookService implements IBookService {
+public class BookService implements IBookService  {
 
   private final BookRepository bookRepository;
   private final ModelMapper modelMapper;
@@ -140,6 +140,25 @@ public class BookService implements IBookService {
   public List<BookResponse> getBooksByUserId(@NonNull Long id) {
     return Optional.ofNullable(id)
         .map(userBookRepository::findBooksByUserId)
+        .orElse(List.of())
+        .stream()
+        .map(book -> modelMapper.map(book, BookResponse.class))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<BookResponse> getBooksByCategoryId(@NonNull Long id) {
+    return Optional.ofNullable(id)
+        .map(bookRepository::findBooksByCategoryId)
+        .orElse(List.of())
+        .stream()
+        .map(book -> modelMapper.map(book, BookResponse.class))
+        .collect(Collectors.toList());  }
+
+  @Override
+  public List<BookResponse> getBooksByAuthorId(@NonNull Long id) {
+    return Optional.ofNullable(id)
+        .map(bookRepository::findBooksByAuthorId)
         .orElse(List.of())
         .stream()
         .map(book -> modelMapper.map(book, BookResponse.class))
