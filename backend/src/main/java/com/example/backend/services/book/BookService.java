@@ -5,6 +5,8 @@ import com.example.backend.models.dtos.BookDTO;
 import com.example.backend.models.entities.Author;
 import com.example.backend.models.entities.Book;
 import com.example.backend.models.entities.Category;
+import com.example.backend.models.entities.UserBook;
+import com.example.backend.models.entities.UserEntity;
 import com.example.backend.models.responses.AuthorResponse;
 import com.example.backend.models.responses.BookDetailResponse;
 import com.example.backend.models.responses.BookResponse;
@@ -46,7 +48,8 @@ public class BookService implements IBookService {
   public BookDetailResponse getById(Long id) {
     return Optional.ofNullable(id)
         .flatMap(
-            e -> bookRepository.findById(e).map(book -> modelMapper.map(book, BookDetailResponse.class)))
+            e -> bookRepository.findById(e)
+                .map(book -> modelMapper.map(book, BookDetailResponse.class)))
         .orElse(null);
   }
 
@@ -144,6 +147,45 @@ public class BookService implements IBookService {
         .stream()
         .map(book -> modelMapper.map(book, BookResponse.class))
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<BookResponse> getBooksByCategoryId(@NonNull Long id) {
+    return Optional.ofNullable(id)
+        .map(bookRepository::findBooksByCategoryId)
+        .orElse(List.of())
+        .stream()
+        .map(book -> modelMapper.map(book, BookResponse.class))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<BookResponse> getBooksByAuthorId(@NonNull Long id) {
+    return Optional.ofNullable(id)
+        .map(bookRepository::findBooksByAuthorId)
+        .orElse(List.of())
+        .stream()
+        .map(book -> modelMapper.map(book, BookResponse.class))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public BookResponse addBookToUser(@NonNull Long userId, @NonNull Long bookId)
+      throws DataNotFoundException {
+    List<UserBook> ub =userBookRepository.findBooksByUserIdAndBookId(userId, bookId);
+       if(ub.size()>0){
+        throw new DataNotFoundException("Book is already added to user");
+       }
+    UserEntity user = userRepository.findById(userId)
+        .orElseThrow(() -> new DataNotFoundException("Can not found user with id" + userId));
+    Book book = bookRepository.findById(bookId)
+        .orElseThrow(() -> new DataNotFoundException("Can not "
+            + "found user with id" + bookId));
+    UserBook userBook=new UserBook();
+    userBook.setBook(book);
+    userBook.setUserEntity(user);
+    userBookRepository.save(userBook);
+    return null;
   }
 
   @Override
