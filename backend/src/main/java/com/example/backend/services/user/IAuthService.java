@@ -6,6 +6,7 @@ import com.example.backend.models.dtos.LoginDTO;
 import com.example.backend.models.dtos.RegisterDTO;
 import com.example.backend.models.dtos.UpdateProfileDTO;
 import com.example.backend.models.entities.UserEntity;
+import com.example.backend.models.responses.UserResponse;
 import com.example.backend.models.responses.UserTokenResponse;
 
 import jakarta.validation.Valid;
@@ -19,5 +20,5 @@ public interface IAuthService {
     UserEntity getUserProfile(String userEmail);
     void changePassword(String userEmail, @Valid ChangePasswordDTO changePasswordDto);
     void updateProfile(String userEmail, @Valid UpdateProfileDTO updateProfileDTO);
-
+    UserResponse getById(Long id);
 }

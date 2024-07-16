@@ -9,7 +9,9 @@ import com.example.backend.models.entities.Confirmation;
 import com.example.backend.models.entities.Role;
 import com.example.backend.models.entities.Token;
 import com.example.backend.models.entities.UserEntity;
+import com.example.backend.models.responses.BookDetailResponse;
 import com.example.backend.models.responses.BookResponse;
+import com.example.backend.models.responses.UserResponse;
 import com.example.backend.models.responses.UserTokenResponse;
 import com.example.backend.repositories.ConfirmationRepository;
 import com.example.backend.repositories.RoleRepository;
@@ -171,6 +173,15 @@ public class AuthService implements IAuthService {
         user.setGender(updateProfileDTO.isGender());
 
         userRepository.save(user);
+    }
+
+    @Override
+    public UserResponse getById(Long id) {
+        return Optional.ofNullable(id)
+                .flatMap(
+                        e -> userRepository.findById(e)
+                                .map(user -> modelMapper.map(user, UserResponse.class)))
+                .orElse(null);
     }
 
 }

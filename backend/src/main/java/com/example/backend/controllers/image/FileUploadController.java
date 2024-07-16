@@ -99,6 +99,7 @@ public class FileUploadController {
     }
 
     @GetMapping("/download-from-amazon")
+    @PreAuthorize("hasAnyAuthority('READER', 'ADMIN')")
     public ResponseEntity<HttpResponse> getFileUrl(
             @RequestParam("fileName") String fileName
     ) {

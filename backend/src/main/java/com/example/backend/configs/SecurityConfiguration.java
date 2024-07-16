@@ -47,6 +47,8 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 String.format("%s/author/**", apiPrefix)).permitAll()
                         .requestMatchers(
+                                String.format("%s/user/**", apiPrefix)).permitAll()
+                        .requestMatchers(
                                 String.format("%s/test/**", apiPrefix)).permitAll()
                         .anyRequest()
                         .authenticated()
