@@ -56,20 +56,12 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userEntity",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    private List<Feedback> feedbacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "userEntity",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private List<UserBook> userBooks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userEntity",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    private List<Notificate> notificates = new ArrayList<>();
 
     @OneToMany(mappedBy = "userEntity",
             cascade = CascadeType.ALL,

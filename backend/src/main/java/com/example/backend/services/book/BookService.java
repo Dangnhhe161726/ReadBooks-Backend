@@ -14,8 +14,6 @@ import com.example.backend.models.responses.CategoryResponse;
 import com.example.backend.repositories.AuthorRepository;
 import com.example.backend.repositories.BookRepository;
 import com.example.backend.repositories.CategoryRepository;
-import com.example.backend.repositories.FeedbackRepository;
-import com.example.backend.repositories.NotificationRepository;
 import com.example.backend.repositories.UserBookRepository;
 import com.example.backend.repositories.UserRepository;
 import java.util.ArrayList;
@@ -40,8 +38,6 @@ public class BookService implements IBookService {
   private final AuthorRepository authorRepository;
   private final UserBookRepository userBookRepository;
   private final UserRepository userRepository;
-  private final FeedbackRepository feedbackRepository;
-  private final NotificationRepository notificationRepository;
   private final CategoryRepository categoryRepository;
 
   @Override

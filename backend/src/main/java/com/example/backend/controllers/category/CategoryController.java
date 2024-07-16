@@ -72,5 +72,4 @@ public class CategoryController {
         Page<CategoryResponse> categoryResponses = categoryService.getByName(name, PageRequest.of(page, size));
         return new ResponseEntity<>(categoryResponses, HttpStatus.OK);
     }
-
 }

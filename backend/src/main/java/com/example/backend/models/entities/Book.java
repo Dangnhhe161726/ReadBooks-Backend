@@ -54,22 +54,12 @@ public class Book {
     @OneToMany(mappedBy = "book",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    private List<Feedback> feedbacks = new ArrayList<>();
-
-    @OneToMany(mappedBy = "book",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
     private List<BookMark> bookMarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "book",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private List<UserBook> userBooks = new ArrayList<>();
-
-    @OneToMany(mappedBy = "book",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    private List<Notificate> notificates = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "category_book",

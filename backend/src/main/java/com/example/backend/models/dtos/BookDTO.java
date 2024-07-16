@@ -1,19 +1,12 @@
 package com.example.backend.models.dtos;
 
-import com.example.backend.models.entities.Author;
-import com.example.backend.models.entities.Category;
-import com.example.backend.models.entities.Feedback;
-import com.example.backend.models.entities.Notificate;
-import com.example.backend.models.entities.UserEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
